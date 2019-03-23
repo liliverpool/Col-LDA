@@ -26,7 +26,7 @@ c_len = 10
 
 
 # TDT2 Dataset
-tdt2_data = np.load("tdt2_em_v4_0_400.npy")
+tdt2_data = np.load("tdt2_em_v4_0_100.npy")
 tdt2_data = tdt2_data[:clip]
 stop_file = open('stopwords2.txt', 'r')
 readtext = stop_file.read()
