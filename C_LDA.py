@@ -13,43 +13,6 @@ from matplotlib import pyplot as plt
 import time
 import os
 
-def compute_mean_topics_no_decay(beafore_d):
-    global doc_topic_distributions, decay
-    d_sum = 0*np.ones([topic_num])
-    n_sum = 0
-    if(beafore_d > len(doc_topic_distributions)):
-        beafore_d = len(doc_topic_distributions)
-    if(beafore_d < 2):
-        return doc_topic_distributions[beafore_d]
-    for i in range(0, beafore_d):
-        d_sum += doc_topic_distributions[i]
-        n_sum += 1
-    return d_sum/n_sum
-
-def compute_mean_words_no_decay(beafore_d, k):
-    global topic_word_distributions, decay
-    d_sum = 0*np.ones([words_num])
-    n_sum = 0
-    if(beafore_d > len(topic_word_distributions)):
-        beafore_d = len(topic_word_distributions)
-    if(beafore_d < 2):
-        return topic_word_distributions[beafore_d][k]
-    for i in range(0, beafore_d):
-        d_sum += doc_topic_distributions[i][k]
-        n_sum += 1
-    return d_sum/n_sum
-
-def rebuild_reuters_data(data, voc):
-    new_data = []
-    for doc in data:
-        doc_words = []
-        for word_index in range(0, len(doc)):
-            word_num = doc[word_index]
-            for i in range(0, word_num):
-                doc_words.append(voc[word_index])
-        new_data.append(doc_words)
-    return new_data
-
 def create_dictionary(data):
     global word_index, index_word
     for doc in data:
@@ -402,17 +365,3 @@ def run(t_data, start, end_iter, iterations, save_p, clip, c_len, palpha, pbeta,
         topic_num += 2
         np.save("LDA_runtime_"+str(data_clip)+".npy", total_time)
     return 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
