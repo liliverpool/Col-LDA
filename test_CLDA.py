@@ -8,6 +8,7 @@ Created on Mon May 28 18:57:00 2018
 import numpy as np
 from matplotlib import pyplot as plt
 import C_LDA
+import tradition_LDA as t_LDA
 
 start = 10
 topics = start 
@@ -36,6 +37,20 @@ dataset = save_p
 y1 = np.load(str(dataset) +"\\C-LDAper_list"+ str(topics) +".npy")
 x = np.linspace(0, iteration_num, iteration_num)
 plt.plot(x[::1], y1[:], "r*-", label='C-LDA', linewidth=1)
+plt.title("Convergence Test By Perplexities")
+plt.ylabel(u"Perplexities")
+plt.xlabel(u"Iterations") 
+plt.legend(loc="upper right")
+plt.show()
+
+save_p2 = "tradition_LDA_EXP" + str(clip)+"_" +str(c_len)+"_"+str(palpha)+"_"+str(pbeta)+"_"+str(pgamma)+"\\"
+t_LDA.run(t_data, start, end, iteration_num, save_p2, clip, c_len, palpha, pbeta, pgamma)
+
+dataset = save_p2
+y2 = np.load(str(dataset) +"\\LDAper_list"+ str(topics) +".npy")
+x = np.linspace(0, iteration_num, iteration_num)
+plt.plot(x[::1], y1[:], "r*-", label='C-LDA', linewidth=1)
+plt.plot(x[::1], y2[:], "b+-", label='LDA', linewidth=1)
 plt.title("Convergence Test By Perplexities")
 plt.ylabel(u"Perplexities")
 plt.xlabel(u"Iterations") 
