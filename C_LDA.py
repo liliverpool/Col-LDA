@@ -217,10 +217,10 @@ def compute_numerator(context_words, w2, k, c_len):
             result += get_context_num_w2(doc, w1, w2, k, c_len)
     return result
 
-def compute_dominator2(context_words, k, c_len):
-    res = np.zeros([words_num])
+def compute_dominator2(context_words, w2, k, c_len):
+    res = np.zeros([topic_num])
     for w in context_words:
-        res += words_co_topic_list[k][w]
+        res += words_co_topic_list[:,w,w2]
     return res.sum()
 
 def compute_numerator2(context_words, w2, k, c_len):
@@ -238,7 +238,7 @@ def recompute_w_topic_distribution(d, w):
         total_n_k = get_total_n_k(d, w, topic)
         context_words = get_context(d, w, context_len)
         numerator = compute_numerator2(context_words, docs_list[d][w][0], topic, context_len)
-#        dominator = compute_dominator2(context_words, topic, context_len)
+#        dominator = compute_dominator2(context_words, w, topic, context_len)
         p_d_w_k = ((n_d_k + alpha) +  (numerator + gamma))*(n_w_k + beta)/(total_n_k + words_num*beta) 
         new_topic_distribution[topic] = p_d_w_k
     new_topic_distribution = new_topic_distribution/new_topic_distribution.sum()   
@@ -276,19 +276,19 @@ def compute_perplexities():
     total_num = 0
     for d in range(0, len(docs_list)):
         for v in range(0, len(docs_list[d])):
-            total_topics = 0
-            if(index_word[docs_list[d][v][0]] in word_index):
-                for k in range(0, len(topic_word_distribution)):
-                    theta_d_k = doc_topic_distributions[d][k]
-                    w = docs_list[d][v][0]
-                    context_words = get_context(d, v, context_len)
-                    numerator = compute_numerator2(context_words, docs_list[d][v][0], k, context_len)
-                    dominator = compute_dominator2(context_words, k, context_len)                   
-                    p_d_w_k = (topic_word_distribution[k]+ (numerator + gamma)/(dominator + words_num*gamma)) /2
-                    theta_d_k = theta_d_k 
-                    total_topics += theta_d_k*p_d_w_k[w]
-                total_num += 1.0
-                total += (-1)*math.log(total_topics)
+            total_t = 0
+            for k in range(0, len(topic_word_distribution)):
+                w = docs_list[d][v][0]
+                context_words = get_context(d, v, context_len)
+                numerator = compute_numerator2(context_words, docs_list[d][v][0], k, context_len)
+                dominator = compute_dominator2(context_words, docs_list[d][v][0], k, context_len)                   
+#                p_d_w_k = (topic_word_distribution[k]+ (numerator + gamma)/(dominator + words_num*gamma)) /2
+                p_d_w_k = topic_word_distribution[k][w]
+                theta_d_k = (doc_topic_distributions[d][k]+ (numerator + gamma)/(dominator + words_num*gamma)) /2
+#                theta_d_k = doc_topic_distributions[d][k]
+                total_t += theta_d_k*p_d_w_k
+            total_num += 1.0
+            total += (-1)*math.log(total_t)
     
     return math.exp(total / total_num) 
         
@@ -300,9 +300,8 @@ def parameter_estimation():
         gibbs_sampling()
         print(model_name + "_Iteration" , i, " time:  ", total_time)
         recompute_distributions()
-        if(model_name == "LDA"):
-            compute_doc_topic()
-            compute_topic_word()     
+        compute_doc_topic()
+        compute_topic_word()     
         per_list.append(compute_perplexities())
     return
         
