@@ -51,8 +51,6 @@ doc_topic_distributions = []
 topic_word_distributions = []
 topic_word_distribution = []
 perplexities = []
-res_list1 = []
-res_list2 = []
 per_list = []
 st= 0
 ed= 0
@@ -297,8 +295,6 @@ def compute_perplexities():
         
 def parameter_estimation():
     per_list.clear()
-    res_list1.clear()
-    res_list2.clear()
     print(model_name)
     for i in range(0, iteration_num):    
         gibbs_sampling()
@@ -322,8 +318,6 @@ def save_result(path):
     np.save(path + str(model_name)+"words_co_topic_list_"+str(topic_num)+".npy", words_co_topic_list)
     LDA_per_list = np.array(per_list)
     np.save(path + str(model_name)+"per_list"+str(topic_num)+".npy", LDA_per_list)
-    LDA_res_list2 = np.array(res_list2)
-    np.save(path + str(model_name)+"res_list2"+str(topic_num)+".npy", LDA_res_list2)
 
 def initialize():
     global topic_word, doc_topic, topic_word_list, words_co_topic_list
