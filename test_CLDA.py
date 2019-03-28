@@ -34,7 +34,7 @@ stop_list = readtext.split('\n')
 texts = [[word for word in line.lower().split() if word not in stop_list] for line in tdt2_data] 
 t_data = texts[:clip]
 
-save_p = "fast_Contextual_LDA_EXP_wiki" + str(clip)+"_" +str(c_len)+"_"+str(palpha)+"_"+str(pbeta)+str(pgamma)+"_" "\\"
+save_p = "Contextual_LDA_EXP" + str(clip)+"_" +str(c_len)+"_"+str(palpha)+"_"+str(pbeta)+"_"+str(pgamma)"\\"
 # RUN C-LDA
 C_LDA.run(t_data, start, end, iteration_num, save_p, clip, c_len, palpha, pbeta, pgamma)
 
