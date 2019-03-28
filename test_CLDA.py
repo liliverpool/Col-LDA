@@ -9,21 +9,15 @@ import numpy as np
 from matplotlib import pyplot as plt
 import C_LDA
 
-
-
-
 start = 10
 topics = start 
 end = 1
 iteration_num = 30
 clip = 50
-
 palpha = 0.05
 pgamma = 0.05
 pbeta = 0.05
 c_len = 10
- 
-
 
 # TDT2 Dataset
 tdt2_data = np.load("tdt2_em_v4_0_100.npy")
@@ -34,10 +28,9 @@ stop_list = readtext.split('\n')
 texts = [[word for word in line.lower().split() if word not in stop_list] for line in tdt2_data] 
 t_data = texts[:clip]
 
-save_p = "Contextual_LDA_EXP" + str(clip)+"_" +str(c_len)+"_"+str(palpha)+"_"+str(pbeta)+"_"+str(pgamma)"\\"
+save_p = "Contextual_LDA_EXP" + str(clip)+"_" +str(c_len)+"_"+str(palpha)+"_"+str(pbeta)+"_"+str(pgamma)+"\\"
 # RUN C-LDA
 C_LDA.run(t_data, start, end, iteration_num, save_p, clip, c_len, palpha, pbeta, pgamma)
-
 
 dataset = save_p
 y1 = np.load(str(dataset) +"\\C-LDAper_list"+ str(topics) +".npy")
@@ -48,50 +41,3 @@ plt.ylabel(u"Perplexities")
 plt.xlabel(u"Iterations") 
 plt.legend(loc="upper right")
 plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
