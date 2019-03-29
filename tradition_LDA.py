@@ -143,7 +143,7 @@ def get_n_d_k(d, w, k):
             n_d_k += 1
     return n_d_k
 
-#获得某个文档的某个主题
+#
 def get_n_w_k(d, w, k):
     n_w_k = 0
     if(docs_list[d][w][1] - k == 0):
@@ -157,40 +157,7 @@ def get_total_n_k(d, w, k):
     total_n_k = np.sum(topic_word[k])
     if(docs_list[d][w][1] - k == 0):
         total_n_k = total_n_k - 1
-    return total_n_k
-
-#统计属于同主题的上下文的单词w1的w2的个数
-def get_context_num_w2(text, w1, w2, k, c_len):
-    indexes = [x for x,a in enumerate(text) if a[0] == w1]
-    w2_list = []
-    for i in indexes:
-        bottom = max(i - c_len, 0)
-        upper = min(i + c_len + 1, len(text))
-        for j in range(bottom, upper):
-            if(text[j][0] == w2 and text[j][1] == k and j!= i and j not in w2_list):
-                w2_list.append(j)
-    return len(w2_list)
-
-def get_context_num_all(text, w1, k, c_len):
-    indexes = [x for x,a in enumerate(text) if a[0] == w1]
-    w_list = []
-    for i in indexes:
-        bottom = max(i - c_len, 0)
-        upper = min(i + c_len + 1, len(text))
-        for j in range(bottom, upper):
-            if(text[j][1] == k and j!= i and j not in w_list):
-                w_list.append(j)
-    return len(w_list)
-    
-def get_context(d, w, c_len):
-    bottom = max(w - c_len, 0)
-    upper = min(w + c_len + 1, len(docs_list[d]))
-    result = []
-    for w in range(bottom, upper):
-        if(docs_list[d][w][0] not in result):
-            result.append(docs_list[d][w][0])
-    return result
-    
+    return total_n_k 
 
 def compute_dominator(context_words, k, c_len):
     result = 0
@@ -206,7 +173,7 @@ def compute_numerator(context_words, w2, k, c_len):
             result += get_context_num_w2(doc, w1, w2, k, c_len)
     return result
 
-#重新计算单词-主题分布
+#
 def recompute_w_topic_distribution(d, w):
     new_topic_distribution = np.ones([topic_num])
     num_list = np.ones([topic_num])
@@ -224,7 +191,7 @@ def recompute_w_topic_distribution(d, w):
         new_topic_distribution[topic] = new_topic_distribution[topic] / np.sum(num_list)
     return new_topic_distribution
     
-# 吉布斯采样
+#
 def gibbs_sampling():
     global doc_topic_distributions, eta_list, gamma_list, st, ed, total_time
     st = 0
